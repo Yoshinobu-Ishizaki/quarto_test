@@ -1,0 +1,34 @@
+---
+title: "QMDファイルのテスト"
+author: Yoshinobu Ishizaki
+date: "`r Sys.Date()`"
+format: gfm
+toc: true
+number-sections: true
+---
+
+# テスト
+
+これはQuartoの文書テスト。日本語がどの程度使えるのか。
+
+→全く問題なく使用できる。
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+cars %>% ggplot(aes(x = speed, y = dist)) + 
+  geom_point() + 
+  labs(title = "carsのプロット")
+```
+地の文もプロットタイトルも全く問題ない。
+
+# 数式
+
+markdown数式の各種亜種を気にすることなく表現出来るらしい。
+
+$$
+y = \sum^N_{i = 1} i^2
+$$
+
