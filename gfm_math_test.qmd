@@ -1,9 +1,9 @@
 ---
-title: "gfm_math_text"
+title: "gfm_math_test"
 format: 
   gfm:
     html-math-method: katex
-    filters: [gitlab-md.lua]
+    filters: [gitlab-quarto.lua]
     
 ---
 
