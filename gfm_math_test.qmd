@@ -1,0 +1,19 @@
+---
+title: "gfm_math_text"
+format: 
+  gfm:
+    html-math-method: katex
+    # filters: [gitlab-md.lua]
+    
+---
+
+This is a referenced math block test document.
+
+Results are checked with Github and Gitlab.
+
+$$
+y = \sin x
+$$ {#eq-math1}
+
+Simple math block must be referenced by `@eq-math1` here @eq-math1 .
+
