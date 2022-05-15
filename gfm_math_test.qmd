@@ -3,7 +3,7 @@ title: "gfm_math_text"
 format: 
   gfm:
     html-math-method: katex
-    # filters: [gitlab-md.lua]
+    filters: [gitlab-md.lua]
     
 ---
 
