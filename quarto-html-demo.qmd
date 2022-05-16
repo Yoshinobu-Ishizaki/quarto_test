@@ -1,0 +1,187 @@
+---
+title: "Quarto Demo"
+author: "Yoshinobu Ishizaki"
+lang: ja
+date: last-modified
+date-formart: iso
+toc: true
+number-sections: true
+format: 
+  gfm:
+    html-math-method: katex
+    filters: [gitlab-quarto.lua]
+  html: 
+    theme: slate
+    self-contained: true
+---
+
+## Quartoデモ {#sec-top}
+
+標準的なHTML文書出力のデモ。
+
+:::{.callout-tip}
+デフォルトでこのような注記スタイルを持っている。
+:::
+
+note, tip, important, caution, warningの5種類がある。詳しくは
+[https://quarto.org/docs/authoring/callouts.html](https://quarto.org/docs/authoring/callouts.html)
+参照。
+
+:::{.callout-caution collapse="true"}
+## 内容を見るにはここを開く
+
+タイトルを付けて、最初はクローズした状態の物を作れる。
+クイズ等のインターフェースに使える。
+:::
+
+図や表、数式、セクション等へ統一的な書式で相互参照を付けられる。
+
+次節のプロットへの参照例: @fig-iris @fig-mscat1 @fig-penguins
+
+数式への参照 : @eq-euler @eq-mat
+
+節への参照: @sec-figtab @sec-math
+
+
+## YAML 
+
+このファイルの先頭に記載してあるYAMLヘッダは次の通り。
+
+```
+title: "Quarto Demo"
+author: "Yoshinobu Ishizaki"
+lang: ja
+date: last-modified
+date-formart: iso
+toc: true
+number-sections: true
+format: 
+  html: 
+    self-contained: true
+```
+
+`date: last-modified`とすることで、ファイルの変更日付がセットされる。
+
+`date-format: iso`とすることで、YYYY-MM-DD形式で日付表示。
+
+`self-contained: true`とすると図等をファイル内部に収めてHTMLファイルのみでどの場所でも再現できるようになる。
+指定しないと、`filename_files/`フォルダ以下に図などが配置され、HTMLファイル本体のみでは正しく表示されなくなる。
+
+`theme: slate`のように様々なテーマが使える。使えるテーマは[https://quarto.org/docs/output-formats/html-themes.html](https://quarto.org/docs/output-formats/html-themes.html)を参照。
+
+
+## R Code
+
+```{r}
+#| message: false 
+#| results: hide
+library(tidyverse)
+Sys.setlocale(locale = "japanese")
+```
+
+`Sys.setlocale()`を`.qmd`ファイルの中で呼んでおくと、Rが正しく日本語ファイルや文字を扱ってくれる。
+`.Renviron`や`.Rprofile`で初期設定として呼ぶとQuartoの変換時にエラーが起こる。
+
+```{r}
+#| label: fig-iris
+#| fig-cap: IRISプロット 
+iris %>% ggplot(aes(x = Petal.Length, y = Petal.Width, color = Species)) + 
+  geom_point() + 
+  labs(title = "IRIS")
+```
+
+勿論日本語のタイトルや軸名も問題ない。
+
+```{r}
+#| warning: false
+library(palmerpenguins)
+```
+
+```{r}
+#| label: fig-penguins
+#| fig-cap: "Palmer Penguines"
+penguins %>% 
+  na.omit() %>% 
+  ggplot(aes(x = island, y = body_mass_g, color = species)) + 
+  geom_boxplot() + 
+  labs(title = "ペンギン", x = "島", y = "体重")
+```
+
+上記のプロットにて、以下のNAは予め除外した。
+
+```{r}
+penguins %>% filter(is.na(body_mass_g)) %>% knitr::kable()
+```
+
+
+## 数式 {#sec-math}
+
+オイラーの公式
+
+$$
+e^{i \pi} = -1
+$$ {#eq-euler}
+
+三角関数の公式
+
+$$
+\begin{align}
+\sin 2x & = 2 \sin x \cos x \\
+\cos 2x & = \cos^2 x - \sin^2 x
+\end{align}
+$$ {#eq-trig}
+
+行列表現
+
+$$
+\begin{pmatrix}
+a & b & c \\
+d & e & f \\
+g & h & i \\
+\end{pmatrix}^{T} = 
+\begin{pmatrix}
+a & d & g \\
+b & e & h \\
+c & f & i 
+\end{pmatrix}
+$$ {#eq-mat}
+
+## 図表 {#sec-figtab}
+
+以下はMSOffice 付属の画像を使用した。
+
+![MS Cat1](cat1-msoffice.png){#fig-mscat1}
+
+![MS Cat2](cat2-msoffice.png){#fig-mscat2}
+
+図のレイアウトを簡単に指定できる。上の図を2列に配置。
+
+::: {#fig-cats layout-ncol=2}
+
+![MS Cat1](cat1-msoffice.png)
+
+![MS Cat2](cat2-msoffice.png)
+
+列並びの図
+:::
+
+Markdown形式の表にも参照が付けられる。
+
+| 色 | 英語 | RGB  |
+| -- | -- | -- |
+| 赤 | Red | ff0000 |
+| 青 | Blue | 0000ff |
+: 表サンプル {#tbl-t1}
+
+Rによる表にも同じように参照が付けられる。`kable`で囲む必要はある。
+
+```{r}
+#| label: tbl-iris
+#| tbl-cap: "IRIS Table"
+iris %>% head(10) %>% knitr::kable()
+```
+
+
+@sec-top に戻る(このような物を書かなくても、右にTOCが表示されているはずで、ナビゲートは簡単なはず)
+
+
